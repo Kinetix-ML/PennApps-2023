@@ -1,4 +1,4 @@
-export type ShirtGLTFResult = {
+export type Shirt = {
     nodes: {
         Polo_Shirt001: THREE.SkinnedMesh
         root: THREE.Bone

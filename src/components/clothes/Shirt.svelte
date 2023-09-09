@@ -8,7 +8,7 @@ Command: npx @threlte/gltf@1.0.0-next.13 ./static/shirt.glb -t
   import { Group } from 'three'
   import { T, type Props, type Events, type Slots, forwardEventHandlers } from '@threlte/core'
   import { useGltf } from '@threlte/extras'
-  import type { ShirtGLTFResult } from './Shirt';
+  import type { Shirt } from './types';
 
   type $$Props = Props<THREE.Group>
   type $$Events = Events<THREE.Group>
@@ -16,7 +16,7 @@ Command: npx @threlte/gltf@1.0.0-next.13 ./static/shirt.glb -t
 
   export const ref = new Group()
 
-  export const gltf = useGltf<ShirtGLTFResult>('/shirt.glb')
+  export const gltf = useGltf<Shirt>('/shirt.glb')
 
   const component = forwardEventHandlers()
 </script>

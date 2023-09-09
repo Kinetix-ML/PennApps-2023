@@ -23,15 +23,16 @@
 
     let helperA: CameraHelper;
     let diffusionCam: PerspectiveCamera;
-    let diffusionMat: MeshPhongMaterial;
     const renderTarget = new WebGLRenderTarget(512, 512);
 
     const { start } = useFrame(() => {
         if (renderer) {
             renderer.setRenderTarget(renderTarget);
+            renderer.setSize(512, 512, false);
+            diffusionCam.aspect = 1
             renderer.render(scene, diffusionCam);
-            diffusionMat.map = renderTarget.texture;
-
+            
+            renderer.setSize(innerWidth, innerHeight, true);
             renderer.setRenderTarget(null);
         }
     }, {autostart: false})
@@ -42,6 +43,7 @@
             start()
         })
     };
+
 </script>
 
 <T.PerspectiveCamera
@@ -67,7 +69,7 @@
     rotation={[0.25, 0, 0]}
     bind:ref={diffusionCam}
     on:create={({ ref }) => {
-        ref.lookAt(1, 1, 1)
+        ref.lookAt(0, 0, 0)
     }}
 >
     <!--<TransformControls
@@ -91,8 +93,8 @@
 <T.DirectionalLight color="white"/>
 
 <T.Mesh>
-    <T.BoxGeometry />
-    <T.MeshPhongMaterial bind:ref={diffusionMat}/>
+    <T.BoxGeometry args={[1, 1, 1]} />
+    <T.MeshBasicMaterial map={renderTarget.texture}/>
 </T.Mesh>
 
 <ClothMeshes.Shirt bind:gltf={gltf} on:create={onChange}/> 

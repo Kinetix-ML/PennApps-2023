@@ -8,12 +8,9 @@
         Portal, 
         TransformControls 
     } from '@threlte/extras';
-    import { 
-        type CameraHelper, 
-        WebGLRenderTarget, 
-        PerspectiveCamera, 
-        MeshPhongMaterial, 
-        Color 
+    import type {
+        CameraHelper,
+        PerspectiveCamera
     } from 'three'
 
     let gltf : AsyncWritable<ThrelteGltf<Clothes.Shirt>>;
@@ -65,21 +62,20 @@
     aspect={1}
     near={0.1}
     far={50}
-    position={[0, -0.2, 2]}
-    rotation={[0.25, 0, 0]}
+    position={[0, 0.35, 2.15]}
     bind:ref={diffusionCam}
     on:create={({ ref }) => {
         ref.lookAt(0, 0, 0)
     }}
 >
-    <!--<TransformControls
+    <TransformControls
         object={ref}
         mode={'rotate'}
         on:objectChange={() => {
         if (!helperA) return
             helperA.update()
         }}
-    />-->
+    />
     <Portal object={scene}>
         <T.CameraHelper
             args={[ref]}
@@ -91,10 +87,5 @@
 
 <T.AmbientLight />
 <T.DirectionalLight color="white"/>
-
-<T.Mesh>
-    <T.BoxGeometry args={[1, 1, 1]} />
-    <T.MeshBasicMaterial map={renderTarget.texture}/>
-</T.Mesh>
 
 <ClothMeshes.Shirt bind:gltf={gltf} on:create={onChange}/> 

@@ -24,7 +24,11 @@
         // set padding
         padding = (window.innerWidth / 2) - (cardWidth / 2);
 
-        const lenis = new Lenis({ orientation: "horizontal" });
+        const lenis = new Lenis({
+            orientation: "horizontal",
+            wheelMultiplier: 2,
+            lerp: 0.07,
+        });
         snap(lenis); // TODO: needed?
 
         lenis.on("scroll", (l: Lenis) => {

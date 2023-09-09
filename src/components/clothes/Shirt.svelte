@@ -8,6 +8,7 @@ Command: npx @threlte/gltf@1.0.0-next.13 ./static/shirt.glb -t
   import { Group } from 'three'
   import { T, type Props, type Events, type Slots, forwardEventHandlers } from '@threlte/core'
   import { useGltf } from '@threlte/extras'
+  import type { ShirtGLTFResult } from './Shirt';
 
   type $$Props = Props<THREE.Group>
   type $$Events = Events<THREE.Group>
@@ -15,26 +16,7 @@ Command: npx @threlte/gltf@1.0.0-next.13 ./static/shirt.glb -t
 
   export const ref = new Group()
 
-  type GLTFResult = {
-    nodes: {
-      Polo_Shirt001: THREE.SkinnedMesh
-      root: THREE.Bone
-      ['MCH-torsoparent']: THREE.Bone
-      ['MCH-hand_ikparentL']: THREE.Bone
-      ['MCH-upper_arm_ik_targetparentL']: THREE.Bone
-      ['MCH-hand_ikparentR']: THREE.Bone
-      ['MCH-upper_arm_ik_targetparentR']: THREE.Bone
-      ['MCH-foot_ikparentL']: THREE.Bone
-      ['MCH-thigh_ik_targetparentL']: THREE.Bone
-      ['MCH-foot_ikparentR']: THREE.Bone
-      ['MCH-thigh_ik_targetparentR']: THREE.Bone
-    }
-    materials: {
-      ['Material.001']: THREE.MeshStandardMaterial
-    }
-  }
-
-  export const gltf = useGltf<GLTFResult>('/shirt.glb')
+  export const gltf = useGltf<ShirtGLTFResult>('/shirt.glb')
 
   const component = forwardEventHandlers()
 </script>

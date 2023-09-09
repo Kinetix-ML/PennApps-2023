@@ -1,10 +1,11 @@
 <script lang="ts">
     import { Canvas, T, useFrame, useThrelte, type AsyncWritable } from '@threlte/core'
 	import Shirt from './clothes/Shirt.svelte';
+    import type { ShirtGLTFResult } from './clothes/Shirt';
 	import { OrbitControls, type ThrelteGltf } from '@threlte/extras';
 
-    let gltf : AsyncWritable<ThrelteGltf>
-    let nodes
+    let gltf : AsyncWritable<ThrelteGltf<ShirtGLTFResult>>
+    let nodes : ShirtGLTFResult['nodes']
 
     const { start } = useFrame(() => {
         // example code, use nodes here to do stuff
@@ -32,6 +33,6 @@
 ><OrbitControls/></T.PerspectiveCamera>
 
 <T.AmbientLight />
-<T.DirectionalLight />
+<T.DirectionalLight color="red"/>
 
 <Shirt bind:gltf={gltf} on:create={onChange}/> 

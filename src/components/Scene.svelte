@@ -34,4 +34,4 @@
 <T.AmbientLight />
 <T.DirectionalLight color="red"/>
 
-<Clothes.Shirt bind:gltf={gltf} on:create={onChange}/> 
+<Clothes.ShirtMesh bind:gltf={gltf} on:create={onChange}/> 

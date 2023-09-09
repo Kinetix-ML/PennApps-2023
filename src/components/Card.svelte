@@ -8,7 +8,7 @@
     let heightClass: string;
     let opacityClass: string;
     let colorClass: string;
-    function updateSize() {
+    function updateSize(currentIndex: number) {
         if (currentIndex == index) {
             heightClass = "h-[600px]";
             opacityClass = "opacity-80";
@@ -23,12 +23,11 @@
             colorClass = "bg-white-200";
         }
     }
-    updateSize();
+    updateSize(currentIndex);
     
     $: {
-        // this only works with the console.log for some reason
-        console.log(currentIndex);
-        updateSize();
+        // for it to track currentIndex it needs to be used
+        updateSize(currentIndex);
     }
 
 </script>

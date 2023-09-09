@@ -19,6 +19,7 @@
     
     let wrapper: HTMLElement;
 
+    let lastScroll = 0;
     onMount(() => {
         // set padding
         padding = (window.innerWidth / 2) - (cardWidth / 2);
@@ -28,6 +29,12 @@
 
         lenis.on("scroll", (l: Lenis) => {
             snap(l);
+            if (lastScroll < l.scroll && l.scroll % 320 < lastScroll % 320 ||
+                lastScroll > l.scroll && l.scroll % 320 > lastScroll % 320) {
+                console.log("playing", lastScroll, l.scroll);
+                new Audio("click2.wav").play();
+            }
+            lastScroll = l.scroll;
         })
 
 

@@ -8,12 +8,9 @@
         Portal, 
         TransformControls 
     } from '@threlte/extras';
-    import { 
-        type CameraHelper, 
-        WebGLRenderTarget, 
-        PerspectiveCamera, 
-        MeshPhongMaterial, 
-        Color 
+    import type {
+        CameraHelper,
+        PerspectiveCamera
     } from 'three'
 
     let gltf : AsyncWritable<ThrelteGltf<Clothes.Shirt>>;
@@ -23,17 +20,8 @@
 
     let helperA: CameraHelper;
     let diffusionCam: PerspectiveCamera;
-    let diffusionMat: MeshPhongMaterial;
-    const renderTarget = new WebGLRenderTarget(512, 512);
 
     const { start } = useFrame(() => {
-        if (renderer) {
-            renderer.setRenderTarget(renderTarget);
-            renderer.render(scene, diffusionCam);
-            diffusionMat.map = renderTarget.texture;
-
-            renderer.setRenderTarget(null);
-        }
     }, {autostart: false})
 
     const onChange = () => {
@@ -63,21 +51,17 @@
     aspect={1}
     near={0.1}
     far={50}
-    position={[0, -0.2, 2]}
-    rotation={[0.25, 0, 0]}
+    position={[0, 0.35, 2.15]}
     bind:ref={diffusionCam}
-    on:create={({ ref }) => {
-        ref.lookAt(1, 1, 1)
-    }}
 >
-    <!--<TransformControls
+    <TransformControls
         object={ref}
         mode={'rotate'}
         on:objectChange={() => {
         if (!helperA) return
             helperA.update()
         }}
-    />-->
+    />
     <Portal object={scene}>
         <T.CameraHelper
             args={[ref]}
@@ -89,10 +73,5 @@
 
 <T.AmbientLight />
 <T.DirectionalLight color="white"/>
-
-<T.Mesh>
-    <T.BoxGeometry />
-    <T.MeshPhongMaterial bind:ref={diffusionMat}/>
-</T.Mesh>
 
 <ClothMeshes.Shirt bind:gltf={gltf} on:create={onChange}/> 

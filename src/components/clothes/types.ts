@@ -11,6 +11,7 @@ export type Shirt = {
         ['MCH-thigh_ik_targetparentL']: THREE.Bone
         ['MCH-foot_ikparentR']: THREE.Bone
         ['MCH-thigh_ik_targetparentR']: THREE.Bone
+        ['DEF-spine']: THREE.Bone
     }
     materials: {
         ['Material.001']: THREE.MeshStandardMaterial

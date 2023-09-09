@@ -1,0 +1,1 @@
+export { default as Shirt } from './clothes/Shirt.svelte'

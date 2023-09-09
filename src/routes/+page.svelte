@@ -1,5 +1,5 @@
 <script lang="ts">
-  import Scene from '../components/Scene.svelte'
+	import Scene from '../components/Scene.svelte'
 	import { Canvas } from '@threlte/core';
 </script>
 

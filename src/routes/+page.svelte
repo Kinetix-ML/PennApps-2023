@@ -5,8 +5,11 @@
 </script>
 
 <div class="w-screen h-screen">
-<Canvas>
-	<Scene />
-</Canvas>
-<MotionFeed/>
+	<!--<MotionFeed/>-->
+	<div class="w-full h-full z-20 relative">
+		<Canvas>
+			<Scene />
+		</Canvas>
+	</div>
+	
 </div>

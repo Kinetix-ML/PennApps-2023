@@ -78,9 +78,6 @@
     far={50}
     position={[0, 0.35, 2.15]}
     bind:ref={diffusionCam}
-    on:create={({ ref }) => {
-        ref.lookAt(0, 0, 0)
-    }}
 >
     <TransformControls
         object={ref}

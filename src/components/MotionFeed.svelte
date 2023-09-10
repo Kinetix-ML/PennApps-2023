@@ -51,7 +51,7 @@
     };
 </script>
 
-<div class="container">
+<div class="w-full h-full aspect-video overflow-hidden absolute top-0 z-0">
     <video
         id="webcam"
         autoplay
@@ -60,33 +60,9 @@
     />
     <canvas
         id="canvas"
-        class="absolute z-10 top-0 left-0 overflow-hidden"
+        class="absolute top-0 left-0 overflow-hidden z-10"
         width="1280"
         height="800"
         bind:this={canvas}
     />
 </div>
-
-<style>
-    .container {
-        max-height: 100vh;
-        max-width: 100vw;
-        aspect-ratio: 1280 / 800;
-        overflow: hidden;
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: auto;
-        height: auto;
-    }
-    video {
-        width: 100%;
-        height: 100%;
-        z-index: 9;
-    }
-    canvas {
-        width: 100%;
-        height: 100%;
-        z-index: 10;
-    }
-</style>

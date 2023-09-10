@@ -13,6 +13,7 @@
         CameraHelper,
         Group,
         Mesh,
+        OrthographicCamera,
         PerspectiveCamera,
 		SkinnedMesh,
     } from 'three'
@@ -35,20 +36,23 @@
 
     const onChange = () => {
         gltf.then(e => {
-            nodes = e.nodes
+            nodes = e.nodes;
             shirtMesh = <SkinnedMesh>shirt.children[shirt.children.length - 1];
-            const texture = new TextureLoader().load('./depth/shirt.png')
+            const texture = new TextureLoader().load('./shirt.png');
             const material = new ProjectedMaterial({
                 camera: diffusionCam, 
                 texture, 
                 cover: true, 
+                textureScale: 1,
                 color: '#ccc', 
                 roughness: 0.95
-            })
+            });
             shirtMesh.material = material;
             material.project(shirtMesh);
+            diffusionCam.updateProjectionMatrix();
+            diffusionCam.updateWorldMatrix(true, true);
             
-            start()
+            start();
         })
     };
 
@@ -78,11 +82,8 @@
     far={50}
     position={[0, 0.35, 2.15]}
     bind:ref={diffusionCam}
-    on:create={({ ref }) => {
-        ref.lookAt(0, 0, 0)
-    }}
 >
-    <TransformControls
+    <!--TransformControls
         object={ref}
         mode={'rotate'}
         on:objectChange={() => {
@@ -95,7 +96,7 @@
             args={[ref]}
             bind:ref={helperA}
         />
-    </Portal>
+    </Portal>-->
 </T.PerspectiveCamera>
 
 <T.AmbientLight />

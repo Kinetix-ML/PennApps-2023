@@ -11,7 +11,8 @@
     function updateSize(currentIndex: number) {
         if (currentIndex == index) {
             heightClass = "h-[600px]";
-            opacityClass = "opacity-80";
+            // opacityClass = "opacity-80";
+            opacityClass = "opacity-0";
             colorClass = "bg-white-50";
         } else if (Math.abs(currentIndex - index) == 1) {
             heightClass = "h-96";
@@ -33,6 +34,6 @@
 </script>
 
 <div class={`card ${width} ${heightClass} ${opacityClass} ${colorClass}
-bg-[rgba(235,235,235)] shadow-glass rounded-xl backdrop-blur-xl transition-all`}>
+shadow-glass rounded-xl backdrop-blur-xl transition-all`}>
     <slot />
 </div>

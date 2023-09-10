@@ -88,7 +88,9 @@
             }
         }
 
-        if (shirtButton.dataset.selected == "true" || hatButton.dataset.selected == "true") {
+        if (prompt.length && 
+            shirtButton.dataset.selected == "true" ||
+            hatButton.dataset.selected == "true") {
             goButton.dataset.active = "true";
         } else {
             goButton.dataset.active = "false";
@@ -104,6 +106,12 @@
 
         // show image preview (current loading)
         imagePreview.dataset.active = "true";
+    }
+
+    function clearModal() {
+        prompt = "";
+        shirtButton.dataset.selected = false;
+        hatButton.dataset.selected = false;
     }
 
     const cards = Array(20).fill(null);
@@ -129,7 +137,7 @@
 <p class="fixed top-5 left-6 font-logo text-4xl">Dreamwear</p>
 <button class="fixed top-5 right-6 text-4xl w-10 h-10 backdrop-blur-xl holographic-text
             cursor-pointer font-bold bg-white-50 shadow-glass-small rounded-md"
-    on:click={()=>modalOpen = true}>
+    on:click={()=>{clearModal(); modalOpen = true}}>
     +
 </button>
 

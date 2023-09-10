@@ -69,9 +69,7 @@
     let shirtButton: HTMLButtonElement;
     let hatButton: HTMLButtonElement;
     let goButton: HTMLButtonElement;
-    function selectModalOption(option: "shirt" | "hat") {
-        console.log(shirtButton, shirtButton.dataset.selected)
-        console.log(hatButton, hatButton.dataset.selected)
+    function selectModalOption(option: "shirt" | "hat" | "prompt") {
         if (option == "shirt") {
             if (shirtButton.dataset.selected == "true") {
                 shirtButton.dataset.selected = "false";
@@ -151,7 +149,7 @@
             <input type="text" placeholder="Whatever you want..."
             class="font-sans px-4 py-2 rounded-full bg-white-50/70 backdrop-blur-3xl
             border-2 border-white-200/50 outline-none focus:border-[#a28cbb] transition-colors
-            duration-[50ms] w-full mb-2" bind:value={prompt}>
+            duration-[50ms] w-full mb-2" bind:value={prompt} on:input={()=>selectModalOption("prompt")}>
             <div class="flex flex-row gap-2 w-full mb-2">
                 <button bind:this={shirtButton} data-selected="false" class="rounded-full bg-white-100/70 backdrop-blur-3xl 
                 px-4 py-2 border-2 border-white-200/50 flex-1 data-[selected=true]:bg-white-0/50

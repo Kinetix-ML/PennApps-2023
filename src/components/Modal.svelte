@@ -12,7 +12,7 @@
     group-data-[open=false]:pointer-events-none">
         <slot />
     </div>
-    <button class="fixed top-5 right-6 text-4xl w-10 h-10 backdrop-blur-xl
+    <button class="fixed top-7 right-8 text-4xl w-10 h-10 backdrop-blur-xl
         cursor-pointer font-bold bg-white-50 shadow-glass-small rounded-md z-50 transition-all
         opacity-0 group-data-[open=true]:opacity-100 group-data-[open=false]:pointer-events-none"
         on:click={()=>open = false}>

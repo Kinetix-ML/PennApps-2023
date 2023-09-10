@@ -186,9 +186,11 @@
     </div>
 </div>
 
-<p class="fixed top-5 left-6 font-logo text-4xl translate-y-1 text-[#a28cbb] blur-[8px]">Dreamwear</p>
-<p class="fixed top-5 left-6 font-logo text-4xl">Dreamwear</p>
-<button class="fixed top-5 right-6 text-4xl w-10 h-10 backdrop-blur-xl holographic-text
+<div class="fixed top-5 left-6 font-logo text-4xl p-4 bg-white-50/50 backdrop-blur-xl rounded-xl shadow-glass">
+	<p>Dreamwear</p>
+	<p class="fixed top-4 left-4 translate-y-1 text-[#a28cbb] -z-10 blur-sm	">Dreamwear</p>
+</div>
+<button class="fixed top-7 right-8 text-4xl w-10 h-10 backdrop-blur-xl holographic-text
             cursor-pointer font-bold bg-white-50 shadow-glass-small rounded-md blue-glow-anim"
     on:click={()=>{clearModal(); modalOpen = true}}>
     +

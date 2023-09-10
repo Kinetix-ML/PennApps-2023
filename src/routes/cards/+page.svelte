@@ -91,7 +91,7 @@
     +
 </button>
 
-<Modal {modalOpen}>
+<Modal open={modalOpen}>
     This is some text
 </Modal>
 

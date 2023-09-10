@@ -196,7 +196,7 @@
             <div class="group-data-[done=true]:opacity-0 transition duration-150">
                 <div class="absolute inset-0 holographic-bg blur-lg"></div>
                 <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-center text-lg">
-                    <p class="mb-5 opacity-60">Your&nbsp;clothing&nbsp;is<br>loading...</p>
+                    <p class="mb-5 opacity-60">Weaving&nbsp;dreams...</p>
                     <div class="lds-ring drop-shadow-glass"><div></div><div></div><div></div><div></div></div>
                 </div>
                 <div data-finished="false" class="absolute bottom-0 left-0 h-3 w-0 bg-white-0

@@ -48,9 +48,24 @@
         }
 
         requestAnimationFrame(raf)
+
+        // functions
+        shiftLeft = () => {
+            if (lenis.scroll > (cardWidth + padding)) {
+                lenis.scrollTo(lenis.scroll - cardWidth);
+            }
+        }
+        shiftRight = () => {
+            if (lenis.scroll < lenis.dimensions.scrollWidth - padding) {
+                lenis.scrollTo(lenis.scroll + cardWidth);
+            }
+        }
     })
 
     const cards = Array(20).fill(null);
+
+    let shiftLeft: Function;
+    let shiftRight: Function;
 
 </script>
 

@@ -189,7 +189,8 @@
     
         <!-- stuff for image preview -->
         <div data-active="false" data-done="false" class="relative w-80 h-80 ml-10 overflow-hidden rounded-lg group
-        data-[active=false]:w-0 data-[active=false]:ml-0 transition-all duration-500" bind:this={imagePreview}>
+        data-[active=false]:w-0 data-[active=false]:ml-0 data-[active=true]:transition-all data-[active=true]:duration-500" 
+        bind:this={imagePreview}>
             <div class="group-data-[done=true]:opacity-0 transition duration-150">
                 <div class="absolute inset-0 holographic-bg blur-lg"></div>
                 <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-center text-lg">

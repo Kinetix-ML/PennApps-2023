@@ -110,8 +110,8 @@
 
     function clearModal() {
         prompt = "";
-        shirtButton.dataset.selected = false;
-        hatButton.dataset.selected = false;
+        shirtButton.dataset.selected = "false";
+        hatButton.dataset.selected = "false";
     }
 
     const cards = Array(20).fill(null);

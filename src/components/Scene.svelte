@@ -41,16 +41,22 @@
     const { start } = useFrame(() => {
         if (torsoCenter && torsoCenter.center && torsoCenter.torsoPoints.length > 0) {
             //shirt.position.set(...screenToWorld(torsoCenter.center[0], torsoCenter.center[1], torsoCenter.center[2]*2,mainCam))
-            console.log(torsoCenter.center)
             shirt.position.x = torsoCenter.center[0] * 3 + 0.05
             shirt.position.y = torsoCenter.center[1] * 2 - 0.1
             shirt.position.z = -1.1//torsoCenter.center[2] / 160
-            
-            console.log(shirt.position)
-            
-            // nodes["DEF-shoulderR"].position.x = torsoCenter.torsoPoints[0].x
-            // nodes["DEF-shoulderR"].position.y = torsoCenter.torsoPoints[0].y
-            // nodes["DEF-shoulderR"].position.z = torsoCenter.torsoPoints[0].z / 140
+            console.log(torsoCenter.torsoPoints[0].x)
+            // nodes["DEF-upper_armL"].position.x = -torsoCenter.torsoPoints[0].x
+            // nodes["upper_arm_tweakL"].position.y = -torsoCenter.torsoPoints[0].y
+            // nodes["upper_arm_tweakL"].position.z = -torsoCenter.torsoPoints[0].z
+            // nodes["upper_arm_tweakR"].position.x = -torsoCenter.torsoPoints[1].x
+            // nodes["upper_arm_tweakR"].position.y = -torsoCenter.torsoPoints[1].y
+            // nodes["upper_arm_tweakR"].position.z = -torsoCenter.torsoPoints[1].z
+            // nodes["thigh_tweakR"].position.x = torsoCenter.torsoPoints[2].x
+            // nodes["thigh_tweakR"].position.y = torsoCenter.torsoPoints[2].y
+            // nodes["thigh_tweakR"].position.z = torsoCenter.torsoPoints[2].z
+            // nodes["thighL"].position.x = torsoCenter.torsoPoints[3].x
+            // nodes["thighL"].position.y = torsoCenter.torsoPoints[3].y
+            // nodes["thighL"].position.z = torsoCenter.torsoPoints[3].z
         }
         
     }, {autostart: false})

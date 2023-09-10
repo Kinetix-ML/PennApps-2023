@@ -69,9 +69,8 @@
                 center[1] -= 0.5
                 center[1] = -center[1]
 
-                let torsoPoints = torsoTestPoints
+                let torsoPoints = [12, 11, 24, 23]
                         .map(e => outputs[3].value.keypoints3D[e])
-                        .map(({x, y, z}) => ({x: x / canvas.width - 0.5 - center[0], y: -y / canvas.height + 0.5 - center[1], z: z - center[2]}))
                         //.reduce((a, b) => ({x: a.x+b.x, y: a.y+b.y, z: a.z+b.z})))
                         //.map(e => (e as number)/4)
                 

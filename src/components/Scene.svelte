@@ -2,7 +2,6 @@
     import { T, useFrame, useThrelte, type AsyncWritable } from '@threlte/core'
     import type * as Clothes from './clothes/types';
     import * as ClothMeshes from './Clothes.js'
-    import { WebGLRenderTarget } from 'three';
 	import { 
         type ThrelteGltf,
         OrbitControls, 
@@ -49,22 +48,34 @@
     }, {autostart: false})
 
     const onChange = () => {
-        gltf.then(e => {
+        gltf.then(async (e) => {
             nodes = e.nodes;
             shirtMesh = <SkinnedMesh>shirt.children[shirt.children.length - 1];
-            const texture = new TextureLoader().load('./shirt.png');
+
+            /*const options = {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: `{"prompt": "${prompt}", "depth": "${depthImage}.png"}`
+            }
+
+            await fetch('https://ce27-34-105-76-22.ngrok.io/', options)
+                .then(response => response.json())
+                .then(response => {imageData = response.image})
+                .catch(err => console.error(err));
+
+            const texture = new TextureLoader().load(`data:image/png;base64,${imageData}`);
             const material = new ProjectedMaterial({
                 camera: diffusionCam, 
                 texture, 
                 cover: true, 
-                textureScale: 1,
+                textureScale: 0.6,
                 color: '#ccc', 
                 roughness: 0.95
             });
             shirtMesh.material = material;
             material.project(shirtMesh);
             diffusionCam.updateProjectionMatrix();
-            diffusionCam.updateWorldMatrix(true, true);
+            diffusionCam.updateWorldMatrix(true, true);*/
             
             start();
         })

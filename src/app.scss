@@ -47,11 +47,12 @@
         animation: holographic-move 20s linear infinite;
     }
 
-    .holographic-bg-pseudo {
+    .holographic-bg-blur {
         position: relative;
+        overflow: hidden;
     }
 
-    .holographic-bg-pseudo::after {
+    .holographic-bg-blur::after {
         content: "";
         position: absolute;
         inset: 0;
@@ -59,10 +60,14 @@
         background-image: url("/holographic.png");
         background-size: 500% 500%;
         animation: holographic-move 20s linear infinite;
+        filter: blur(16px);
     }
 
     .blue-glow {
         filter: drop-shadow(0 0 20px rgb(151, 216, 255));
+    }
+    .blue-glow-thin {
+        filter: drop-shadow(0 0 5px rgba(151, 216, 255, 0.6));
     }
 
     .lds-ring {

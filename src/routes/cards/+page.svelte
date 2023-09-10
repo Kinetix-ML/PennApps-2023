@@ -4,6 +4,8 @@
 	import Card from "../../components/Card.svelte";
 	import Modal from "../../components/Modal.svelte";
     import "@fontsource/dm-sans";
+	import { Canvas } from "@threlte/core";
+	import PreviewScene from "./PreviewScene.svelte";
 
     const cardWidth = 320
     let padding = 425; // will be set later based on screen size
@@ -69,9 +71,7 @@
     let shirtButton: HTMLButtonElement;
     let hatButton: HTMLButtonElement;
     let goButton: HTMLButtonElement;
-    function selectModalOption(option: "shirt" | "hat") {
-        console.log(shirtButton, shirtButton.dataset.selected)
-        console.log(hatButton, hatButton.dataset.selected)
+    function selectModalOption(option: "shirt" | "hat" | "prompt") {
         if (option == "shirt") {
             if (shirtButton.dataset.selected == "true") {
                 shirtButton.dataset.selected = "false";
@@ -88,7 +88,9 @@
             }
         }
 
-        if (shirtButton.dataset.selected == "true" || hatButton.dataset.selected == "true") {
+        if (prompt.length && 
+            shirtButton.dataset.selected == "true" ||
+            hatButton.dataset.selected == "true") {
             goButton.dataset.active = "true";
         } else {
             goButton.dataset.active = "false";
@@ -96,8 +98,41 @@
     }
 
     let prompt: string;
-    function generateItem() {
-        const type = shirtButton.dataset.active == "true" ? "shirt" : "hat";
+    let imagePreview: HTMLDivElement;
+    let imageData: string;
+    let generated = false;
+
+    async function generateItem() {
+        if (goButton.dataset.active != "true") { return }
+
+        generated = false;
+
+        const type = shirtButton.dataset.active != "true" ? "shirt" : "hat";
+        console.log(type);
+        const options = {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: `{"prompt": "${prompt}", "depth": "${type}.png"}`
+        }
+
+        // show image preview (current loading)
+        imagePreview.dataset.active = "true";
+
+        await fetch('https://ab1e-34-105-76-22.ngrok.io/', options)
+            .then(response => response.json())
+            .then(response => {
+                imageData = response.image; 
+                imagePreview.dataset.done = 'true';
+                generated = true;
+            })
+            .catch(err => console.error(err));
+    }
+
+    function clearModal() {
+        prompt = "";
+        shirtButton.dataset.selected = "false";
+        hatButton.dataset.selected = "false";
+        imagePreview.dataset.active = "false";
     }
 
     const cards = Array(20).fill(null);
@@ -109,7 +144,7 @@
 
 </script>
 
-<div class="fixed inset-0 bg-[url('/blob-background.svg')]" />
+<div class="fixed inset-0 bg-[url('/blob-background.svg')] bg-cover bg-center bg-no-repeat" />
 
 <div class="absolute top-1/2 -translate-y-1/2">
     <div class="flex flex-row no-scrollbar gap-4 items-center" style={padding ? `padding: ${padding}px` : ""} bind:this={wrapper}>
@@ -123,12 +158,12 @@
 <p class="fixed top-5 left-6 font-logo text-4xl">Dreamwear</p>
 <button class="fixed top-5 right-6 text-4xl w-10 h-10 backdrop-blur-xl holographic-text
             cursor-pointer font-bold bg-white-50 shadow-glass-small rounded-md"
-    on:click={()=>modalOpen = true}>
+    on:click={()=>{clearModal(); modalOpen = true}}>
     +
 </button>
 
 <Modal bind:open={modalOpen}>
-    <div class="flex flex-row gap-10 items-center">
+    <div class="flex flex-row items-center">
         <div class="flex-1 min-w-[15rem]">
 
             <p class="text-center font-bold text-lg font-sans">Create some clothing</p>
@@ -136,27 +171,43 @@
             <input type="text" placeholder="Whatever you want..."
             class="font-sans px-4 py-2 rounded-full bg-white-50/70 backdrop-blur-3xl
             border-2 border-white-200/50 outline-none focus:border-[#a28cbb] transition-colors
-            duration-[50ms] w-full mb-2" bind:value={prompt}>
+            duration-[50ms] w-full mb-2" bind:value={prompt} on:input={()=>selectModalOption("prompt")}>
             <div class="flex flex-row gap-2 w-full mb-2">
-                <button bind:this={shirtButton} data-selected="false" class="rounded-full bg-white-50/70 backdrop-blur-3xl 
-                px-4 py-2 border-2 border-white-200/50 flex-1 data-[selected=true]:bg-[#dbb4d6]/50
-                data-[selected=true]:border-[#d6bcd5]/50" on:click={()=>selectModalOption("shirt")}>Shirt</button>
-                <button bind:this={hatButton} data-selected="false" class="rounded-full bg-white-50/70 backdrop-blur-3xl
-                px-4 py-2 border-2 border-white-200/50 flex-1 data-[selected=true]:bg-[#dbb4d6]/50
-                data-[selected=true]:border-[#d6bcd5]/50" on:click={()=>selectModalOption("hat")}>Hat</button>
+                <button bind:this={shirtButton} data-selected="false" class="rounded-full bg-white-100/70 backdrop-blur-3xl 
+                px-4 py-2 border-2 border-white-200/50 flex-1 data-[selected=true]:bg-white-0/50
+                data-[selected=true]:border-white-150/50 data-[selected=true]:blue-glow-thin" 
+                on:click={()=>selectModalOption("shirt")}>Shirt</button>
+                <button bind:this={hatButton} data-selected="false" class="rounded-full bg-white-100/70 backdrop-blur-3xl
+                px-4 py-2 border-2 border-white-200/50 flex-1 data-[selected=true]:bg-white-0/50
+                data-[selected=true]:border-white-150/50" on:click={()=>selectModalOption("hat")}>Hat</button>
             </div>
-            <button bind:this={goButton} data-active="false" class="w-full holographic-bg rounded-full px-4 py-2 font-bold 
-            font-sans data-[active=true]:hover:blue-glow transition-all duration-500 data-[active=false]:cursor-not-allowed"
+            <button bind:this={goButton} data-active="false" class="w-full holographic-bg-blur rounded-full px-4 py-2 
+            font-bold  font-sans data-[active=true]:hover:blue-glow transition-all duration-500
+            data-[active=false]:cursor-not-allowed shadow-glass-xs"
             on:click={generateItem} >Go →</button>
         </div>
     
         <!-- stuff for image preview -->
-        <div class="relative w-80 h-80 overflow-hidden rounded-lg">
-            <div class="absolute inset-0 holographic-bg blur-lg"></div>
-            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-center text-lg">
-                <p class="mb-5">Your clothing is loading...</p>
-                <div class="lds-ring"><div></div><div></div><div></div><div></div></div>
+        <div data-active="false" data-done="false" class="relative w-80 h-80 ml-10 overflow-hidden rounded-lg group
+        data-[active=false]:w-0 data-[active=false]:ml-0 data-[active=true]:transition-all data-[active=true]:duration-500" 
+        bind:this={imagePreview}>
+            <div class="group-data-[done=true]:opacity-0 transition duration-150">
+                <div class="absolute inset-0 holographic-bg blur-lg"></div>
+                <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-center text-lg">
+                    <p class="mb-5 opacity-60">Your&nbsp;clothing&nbsp;is<br>loading...</p>
+                    <div class="lds-ring drop-shadow-glass"><div></div><div></div><div></div><div></div></div>
+                </div>
+                <div data-finished="false" class="absolute bottom-0 left-0 h-3 w-0 bg-white-0
+                group-data-[active=true]:w-11/12 transition-all duration-[12s]
+                data-[finished=true]:!w-full data-[finished=true]:duration-500"></div>
             </div>
+            {#if generated}
+            <div class="w-full h-full opacity-0 group-data-[done=true]:opacity-100 transition">
+                <Canvas>
+                    <PreviewScene imageData={imageData}/>
+                </Canvas>
+            </div>
+            {/if}
         </div>
     </div>
 </Modal>

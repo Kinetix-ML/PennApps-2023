@@ -2,6 +2,7 @@
     import { T, useFrame, useThrelte, type AsyncWritable } from '@threlte/core'
     import type * as Clothes from './clothes/types';
     import * as ClothMeshes from './Clothes.js'
+    import { WebGLRenderTarget } from 'three';
 	import { 
         type ThrelteGltf,
         OrbitControls, 
@@ -86,6 +87,6 @@
 
 
 <T.AmbientLight />
-<T.DirectionalLight color="white"/>
+<T.DirectionalLight color={[1, 1, 1]}/>
 
 <ClothMeshes.Shirt bind:gltf={gltf} on:create={onChange}/> 

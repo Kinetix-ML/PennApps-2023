@@ -45,7 +45,7 @@
             camera: diffusionCam, 
             texture, 
             cover: true, 
-            textureScale: 0.6,
+            textureScale: 0.8,
             color: '#ccc', 
             roughness: 0.95
         });
@@ -100,7 +100,7 @@
                 camera: diffusionCam, 
                 texture, 
                 cover: true, 
-                textureScale: 0.6,
+                textureScale: 0.8,
                 color: '#ccc', 
                 roughness: 0.95
             });

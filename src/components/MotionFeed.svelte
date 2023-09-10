@@ -18,7 +18,15 @@
             processing = true;
             canvas.getContext('2d')?.clearRect(0, 0, canvas.width, canvas.height);
             outputs = await pipe.execute([video, canvas]);
-            console.log(outputs);
+            
+            let testPoints = [8, 7, 12, 11, 16, 15, 20, 19]
+            if (!(outputs[0].value instanceof String)) {
+                let deltaMove = testPoints.map(e => outputs[1].value[e]*(outputs[0].value.keypoints[e].z+1)).reduce((a, b) => a + b, 0) / testPoints.length
+                if (Math.abs(deltaMove) > 120) {
+                    console.log(`swipe ${deltaMove > 0 ? "right" : "left"}`)
+                }
+            }
+            
             processing = false;
             video.requestVideoFrameCallback(runInference);
         }

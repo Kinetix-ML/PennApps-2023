@@ -144,15 +144,17 @@
             border-2 border-white-200/50 outline-none focus:border-[#a28cbb] transition-colors
             duration-[50ms] w-full mb-2" bind:value={prompt}>
             <div class="flex flex-row gap-2 w-full mb-2">
-                <button bind:this={shirtButton} data-selected="false" class="rounded-full bg-white-50/70 backdrop-blur-3xl 
-                px-4 py-2 border-2 border-white-200/50 flex-1 data-[selected=true]:bg-[#dbb4d6]/50
-                data-[selected=true]:border-[#d6bcd5]/50" on:click={()=>selectModalOption("shirt")}>Shirt</button>
-                <button bind:this={hatButton} data-selected="false" class="rounded-full bg-white-50/70 backdrop-blur-3xl
-                px-4 py-2 border-2 border-white-200/50 flex-1 data-[selected=true]:bg-[#dbb4d6]/50
-                data-[selected=true]:border-[#d6bcd5]/50" on:click={()=>selectModalOption("hat")}>Hat</button>
+                <button bind:this={shirtButton} data-selected="false" class="rounded-full bg-white-100/70 backdrop-blur-3xl 
+                px-4 py-2 border-2 border-white-200/50 flex-1 data-[selected=true]:bg-white-0/50
+                data-[selected=true]:border-white-150/50 data-[selected=true]:blue-glow-thin" 
+                on:click={()=>selectModalOption("shirt")}>Shirt</button>
+                <button bind:this={hatButton} data-selected="false" class="rounded-full bg-white-100/70 backdrop-blur-3xl
+                px-4 py-2 border-2 border-white-200/50 flex-1 data-[selected=true]:bg-white-0/50
+                data-[selected=true]:border-white-150/50" on:click={()=>selectModalOption("hat")}>Hat</button>
             </div>
-            <button bind:this={goButton} data-active="false" class="w-full holographic-bg rounded-full px-4 py-2 font-bold 
-            font-sans data-[active=true]:hover:blue-glow transition-all duration-500 data-[active=false]:cursor-not-allowed"
+            <button bind:this={goButton} data-active="false" class="w-full holographic-bg-blur rounded-full px-4 py-2 
+            font-bold  font-sans data-[active=true]:hover:blue-glow transition-all duration-500
+            data-[active=false]:cursor-not-allowed shadow-glass-xs"
             on:click={generateItem} >Go →</button>
         </div>
     

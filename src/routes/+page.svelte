@@ -2,13 +2,15 @@
 	import Scene from '../components/Scene.svelte'
 	import { Canvas } from '@threlte/core';
 	import MotionFeed from '../components/MotionFeed.svelte';
+
+	let outputs = []
 </script>
 
 <div class="w-screen h-screen">
-	<!--<MotionFeed/>-->
-	<div class="w-full h-full z-20 relative">
+	<MotionFeed bind:outCenter={outputs}/>
+	<div class="w-full h-full z-20 absolute top-0 left-0">
 		<Canvas>
-			<Scene />
+			<Scene torsoCenter={outputs}/>
 		</Canvas>
 	</div>
 	

@@ -5,7 +5,7 @@
     let video : HTMLVideoElement
     let canvas : HTMLCanvasElement
     let pipe : KMLPipeline
-    let outputs = []
+    export let outCenter = {}
     let processing = false
     
     onMount(async () => {
@@ -17,14 +17,42 @@
         if (!processing) {
             processing = true;
             canvas.getContext('2d')?.clearRect(0, 0, canvas.width, canvas.height);
-            outputs = await pipe.execute([video, canvas]);
+            let outputs = await pipe.execute([video, canvas]);
             
-            let testPoints = [8, 7, 12, 11, 16, 15, 20, 19]
+            const handTestPoints = [8, 7, 12, 11, 16, 15, 20, 19]
+            const torsoTestPoints = [12, 11, 24, 23]
+
             if (!(outputs[0].value instanceof String)) {
-                let deltaMove = testPoints.map(e => outputs[1].value[e]*(outputs[0].value.keypoints[e].z+1)).reduce((a, b) => a + b, 0) / testPoints.length
+                let deltaMove = handTestPoints.map(e => outputs[1].value[e]*(outputs[0].value.keypoints[e].z+1)).reduce((a, b) => a + b, 0) / handTestPoints.length
                 if (Math.abs(deltaMove) > 120) {
                     console.log(`swipe ${deltaMove > 0 ? "right" : "left"}`)
                 }
+            }
+
+            if (outputs.length > 2 && !(outputs[3].value instanceof String)) {
+
+                let center = Object.values(torsoTestPoints
+                        .map(e => outputs[3].value.keypoints[e])
+                        .reduce((a, b) => ({x: a.x+b.x, y: a.y+b.y, z: a.z+b.z})))
+                        .map(e => (e as number)/4)
+
+                        center[0] /= canvas.width
+                center[1] /= canvas.height
+                center[0] -= 0.5
+                center[1] -= 0.5
+                center[1] = -center[1]
+
+                let torsoPoints = torsoTestPoints
+                        .map(e => outputs[3].value.keypoints[e])
+                        .map(({x, y, z}) => ({x: x / canvas.width - 0.5 - center[0], y: -y / canvas.height + 0.5 - center[1], z: z - center[2]}))
+                        //.reduce((a, b) => ({x: a.x+b.x, y: a.y+b.y, z: a.z+b.z})))
+                        //.map(e => (e as number)/4)
+                
+                
+
+                outCenter = {center: [...center], torsoPoints: [...torsoPoints]}
+            } else {
+                outCenter = undefined
             }
             
             processing = false;
@@ -51,18 +79,41 @@
     };
 </script>
 
-<div class="w-full h-full aspect-video overflow-hidden absolute top-0 z-0">
+
+<div>
     <video
-        id="webcam"
+    id="webcam"
         autoplay
-        class="rounded-lg shadow-lg w-full h-full object-fill"
         bind:this={video}
     />
     <canvas
-        id="canvas"
-        class="absolute top-0 left-0 overflow-hidden z-10"
+    id="canvas"
         width="1280"
         height="800"
         bind:this={canvas}
     />
 </div>
+
+<style>
+    .container {
+        max-height: 100vh;
+        max-width: 100vw;
+        aspect-ratio: 1280 / 800;
+        overflow: hidden;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: auto;
+        height: auto;
+    }
+    video {
+        width: 100%;
+        height: 100%;
+        z-index: 9;
+    }
+    canvas {
+        width: 100%;
+        height: 100%;
+        z-index: 10;
+    }
+</style>

@@ -8,21 +8,24 @@
         Portal, 
         TransformControls 
     } from '@threlte/extras';
-    import type {
-        CameraHelper,
-        Group,
-        Mesh,
-        OrthographicCamera,
-        PerspectiveCamera,
-		SkinnedMesh,
+    import {
+	Group,
+        type CameraHelper,
+        type Mesh,
+        type OrthographicCamera,
+        type PerspectiveCamera,
+		type SkinnedMesh,
     } from 'three'
     import { Vector2, TextureLoader } from 'three';
     import ProjectedMaterial from 'three-projected-material'
+	import { DataType } from 'kml-pipe-ts/dist/base_structs';
 
     let gltf: AsyncWritable<ThrelteGltf<Clothes.Shirt>>;
     let nodes: Clothes.Shirt['nodes'];
     let shirt: Group;
     let shirtMesh: SkinnedMesh;
+
+    export let torsoCenter
 
     const { renderer, scene } = useThrelte();
 
@@ -30,7 +33,18 @@
     let diffusionCam: PerspectiveCamera;
     let mainCam: PerspectiveCamera;
 
+    // center: [x, y, z]; torsoPoints: [{x, y, z}...]
     const { start } = useFrame(() => {
+        if (torsoCenter && torsoCenter.center && torsoCenter.torsoPoints.length > 0) {
+            shirt.position.x = torsoCenter.center[0] * 3.2
+            shirt.position.y = torsoCenter.center[1]
+            shirt.position.z = -torsoCenter.center[2] / 300
+            
+            // nodes["DEF-shoulderR"].position.x = torsoCenter.torsoPoints[0].x
+            // nodes["DEF-shoulderR"].position.y = torsoCenter.torsoPoints[0].y
+            // nodes["DEF-shoulderR"].position.z = torsoCenter.torsoPoints[0].z / 140
+        }
+        
     }, {autostart: false})
 
     const onChange = () => {
@@ -70,11 +84,11 @@
 </script>
 
 <T.PerspectiveCamera
-    fov={90}
+    fov={60}
     aspect={1}
     near={0.1}
     far={100}
-    position={[1, 1, 1]}
+    position={[0, 0.35, 2.15]}
     makeDefault
     bind:ref={mainCam}
     on:create={({ ref }) => {

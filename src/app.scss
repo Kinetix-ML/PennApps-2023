@@ -16,7 +16,7 @@
         color: transparent;
         background-image: url("/holographic-dark.png");
         background-size: 500% 500%;
-        animation: holographic-move 20s linear infinite, blue-glow 10s linear infinite;
+        animation: holographic-move 20s linear infinite;
     }
 
     .holographic-shadow {
@@ -65,6 +65,9 @@
 
     .blue-glow {
         filter: drop-shadow(0 0 20px rgb(151, 216, 255));
+    }
+    .blue-glow-anim {
+        animation: blue-glow 4s linear infinite;
     }
     .blue-glow-thin {
         filter: drop-shadow(0 0 5px rgba(151, 216, 255, 0.6));

@@ -100,14 +100,15 @@
     let prompt: string;
     let imagePreview: HTMLDivElement;
     let finishButtons: HTMLDivElement;
+    let progressBar: HTMLDivElement;
     let imageData: string;
     let generated = false;
 
     async function generateItem() {
         if (goButton.dataset.active != "true") { return }
         // make sure loading is shown
-        imagePreview.dataset.done = "false";
         imagePreview.dataset.active = "false";
+        imagePreview.dataset.done = "false";
 
         generated = false;
 
@@ -121,14 +122,16 @@
 
         // show image preview (current loading)
         imagePreview.dataset.active = "true";
+        progressBar.dataset.loading = "true";
 
-        await fetch('https://ab1e-34-105-76-22.ngrok.io/', options)
+        await fetch('https://48e9-34-105-76-22.ngrok.io/', options)
             .then(response => response.json())
             .then(response => {
                 imageData = response.image; 
                 imagePreview.dataset.done = 'true';
                 generated = true;
                 finishButtons.dataset.active = "true";
+                progressBar.dataset.loading = "false";
             })
             .catch(err => console.error(err));
     }
@@ -138,6 +141,7 @@
         shirtButton.dataset.selected = "false";
         hatButton.dataset.selected = "false";
         imagePreview.dataset.active = "false";
+        finishButtons.dataset.active = "false";
     }
 
     const cards = Array(20).fill(null);
@@ -162,7 +166,7 @@
 <p class="fixed top-5 left-6 font-logo text-4xl translate-y-1 text-[#a28cbb] blur-[8px]">Dreamwear</p>
 <p class="fixed top-5 left-6 font-logo text-4xl">Dreamwear</p>
 <button class="fixed top-5 right-6 text-4xl w-10 h-10 backdrop-blur-xl holographic-text
-            cursor-pointer font-bold bg-white-50 shadow-glass-small rounded-md"
+            cursor-pointer font-bold bg-white-50 shadow-glass-small rounded-md blue-glow-anim"
     on:click={()=>{clearModal(); modalOpen = true}}>
     +
 </button>
@@ -196,19 +200,19 @@
         <div data-active="false" data-done="false" class="relative w-80 h-80 ml-10 overflow-hidden rounded-lg group
         data-[active=false]:w-0 data-[active=false]:ml-0 data-[active=true]:transition-all data-[active=true]:duration-500" 
         bind:this={imagePreview}>
-            <div class="group-data-[done=true]:opacity-0 transition duration-150">
+            <div class="group-data-[done=true]:opacity-0 transition duration-150 group-data-[done=true]:pointer-events-none">
                 <div class="absolute inset-0 holographic-bg blur-lg"></div>
                 <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-center text-lg">
                     <p class="mb-5 opacity-60">Weaving&nbsp;dreams...</p>
                     <div class="lds-ring drop-shadow-glass"><div></div><div></div><div></div><div></div></div>
                 </div>
-                <div data-finished="false" class="absolute bottom-0 left-0 h-3 w-0 bg-white-0
-                group-data-[active=true]:w-11/12 transition-all duration-[12s]
-                data-[finished=true]:!w-full data-[finished=true]:duration-500"></div>
+                <div data-finished="false" data-loading="false" class="absolute bottom-0 left-0 h-3 w-0 bg-white-0
+                data-[loading=true]:w-11/12 transition-all data-[loading=true]:duration-[12s]
+                data-[finished=true]:!w-full data-[finished=true]:duration-500 duration-0" bind:this={progressBar}/>
             </div>
             {#if generated}
             <div class="w-full h-full opacity-0 group-data-[done=true]:opacity-100 transition">
-                <Canvas>
+                <Canvas rendererParameters={{preserveDrawingBuffer: true}}>
                     <PreviewScene imageData={imageData}/>
                 </Canvas>
             </div>

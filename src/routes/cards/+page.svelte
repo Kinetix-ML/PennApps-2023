@@ -123,7 +123,7 @@
 
 </script>
 
-<div class="fixed inset-0 bg-[url('/blob-background.svg')]" />
+<div class="fixed inset-0 bg-[url('/blob-background.svg')] bg-cover bg-center bg-no-repeat" />
 
 <div class="absolute top-1/2 -translate-y-1/2">
     <div class="flex flex-row no-scrollbar gap-4 items-center" style={padding ? `padding: ${padding}px` : ""} bind:this={wrapper}>

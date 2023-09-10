@@ -1,3 +1,77 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@font-face {
+    font-family: "Elgoc Regular";
+    src: url("ElgocRegular.woff");
+}
+
+@layer utilities {
+
+    .holographic-text {
+        background-clip: text;
+        -webkit-background-clip: text;
+        -moz-background-clip: text;
+        color: transparent;
+        background-image: url("/holographic-dark.png");
+        background-size: 500% 500%;
+        animation: holographic-move 20s linear infinite, blue-glow 10s linear infinite;
+    }
+
+    .holographic-shadow {
+        position: relative;
+    }
+    .holographic-shadow::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        z-index: -1;
+        background-image: url("/holographic.png");
+        background-size: 500% 500%;
+        animation: holographic-move 20s linear infinite, blue-glow 10s linear infinite;
+        // opacity: 0.5;
+        filter: blur(100px);
+        -moz-filter: blur(100px);
+        -webkit-filter: blur(100px);
+        -o-filter: blur(100px);
+    }
+}
+
+// @keyframes holographic-move {
+//     0% {
+//         background-position: 10% 10%;
+//     }
+//     25% {
+//         background-position: 90% 10%;
+//     }
+//     50% {
+//         background-position: 90% 90%;
+//     }
+//     75% {
+//         background-position: 10% 90%;
+//     }
+//     100% {
+//         background-position: 10% 10%;
+//     }
+// }
+@keyframes holographic-move {
+    from {
+        background-position: 0% 0%;
+    }
+    to {
+        background-position: 100% 100%;
+    }
+}
+
+@keyframes blue-glow {
+    0% {
+        filter: none;
+    }
+    50% {
+        filter: drop-shadow(0 0 20px rgb(151, 216, 255));
+    }
+    100% {
+        filter: none;
+    }
+}

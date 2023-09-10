@@ -55,6 +55,7 @@
 </script>
 
 <div class="fixed inset-0 bg-[url('/blob-background.svg')]" />
+
 <div class="absolute top-1/2 -translate-y-1/2">
     <div class="flex flex-row no-scrollbar gap-4 items-center" style={padding ? `padding: ${padding}px` : ""} bind:this={wrapper}>
         {#each cards as card, index}
@@ -62,6 +63,14 @@
         {/each}
     </div>
 </div>
+
+<!-- <p class="fixed top-5 left-6 font-logo text-4xl translate-y-1 holographic-text blur-3xl">Dreamwear</p> -->
+<p class="fixed top-5 left-6 font-logo text-4xl translate-y-1 text-[#a28cbb] blur-[8px]">Dreamwear</p>
+<p class="fixed top-5 left-6 font-logo text-4xl">Dreamwear</p>
+<button class="fixed top-5 right-6 text-4xl w-10 h-10 backdrop-blur-xl holographic-text
+            cursor-pointer font-bold bg-white-50 shadow-glass-small rounded-md">
+    +
+</button>
 
 <style>
     :global(body) {

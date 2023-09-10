@@ -33,6 +33,6 @@
 </script>
 
 <div class={`card ${width} ${heightClass} ${opacityClass} ${colorClass}
-bg-[rgba(235,235,235)] shadow-glass rounded-xl backdrop-blur-xl transition-all`}>
+shadow-glass rounded-xl backdrop-blur-xl transition-all`}>
     <slot />
 </div>

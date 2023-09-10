@@ -5,6 +5,7 @@ export default {
     extend: {
       boxShadow: {
         "glass": "0px 20px 80px 0px rgba(0, 0, 0, 0.2)",
+        "glass-small": "0px 4px 40px 0px rgba(0, 0, 0, 0.2)"
       },
       spacing: {
         "card-h": "80vh",
@@ -16,6 +17,9 @@ export default {
           100: "#EBEBEB",
           200: "D9D9D9",
         }
+      },
+      fontFamily: {
+        logo: ["Elgoc Regular", "serif"]
       }
     },
   },

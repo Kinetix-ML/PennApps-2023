@@ -7,6 +7,9 @@ export default {
         "glass": "0px 20px 80px 0px rgba(0, 0, 0, 0.2)",
         "glass-small": "0px 4px 40px 0px rgba(0, 0, 0, 0.2)"
       },
+      dropShadow: {
+        "glass": "0px 4px 40px rgba(0, 0, 0, 0.5)"
+      },
       spacing: {
         "card-h": "80vh",
         "card-w": "300px",

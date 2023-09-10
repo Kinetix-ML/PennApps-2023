@@ -96,8 +96,14 @@
     }
 
     let prompt: string;
+    let imagePreview: HTMLDivElement
     function generateItem() {
+        if (goButton.dataset.active != "true") { return }
+
         const type = shirtButton.dataset.active == "true" ? "shirt" : "hat";
+
+        // show image preview (current loading)
+        imagePreview.dataset.active = "true";
     }
 
     const cards = Array(20).fill(null);
@@ -128,7 +134,7 @@
 </button>
 
 <Modal bind:open={modalOpen}>
-    <div class="flex flex-row gap-10 items-center">
+    <div class="flex flex-row items-center">
         <div class="flex-1 min-w-[15rem]">
 
             <p class="text-center font-bold text-lg font-sans">Create some clothing</p>
@@ -151,11 +157,12 @@
         </div>
     
         <!-- stuff for image preview -->
-        <div class="relative w-80 h-80 overflow-hidden rounded-lg">
+        <div data-active="false" class="relative w-80 h-80 ml-10 overflow-hidden rounded-lg
+        data-[active=false]:w-0 data-[active=false]:ml-0 transition-all duration-500" bind:this={imagePreview}>
             <div class="absolute inset-0 holographic-bg blur-lg"></div>
             <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-center text-lg">
-                <p class="mb-5">Your clothing is loading...</p>
-                <div class="lds-ring"><div></div><div></div><div></div><div></div></div>
+                <p class="mb-5 opacity-60">Your&nbsp;clothing&nbsp;is<br>loading...</p>
+                <div class="lds-ring drop-shadow-glass"><div></div><div></div><div></div><div></div></div>
             </div>
         </div>
     </div>

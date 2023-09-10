@@ -15,8 +15,9 @@
         type OrthographicCamera,
         type PerspectiveCamera,
 		type SkinnedMesh,
+		RGB_PVRTC_2BPPV1_Format,
     } from 'three'
-    import { Vector2, TextureLoader } from 'three';
+    import { Vector2, TextureLoader, Vector3 } from 'three';
     import ProjectedMaterial from 'three-projected-material'
 	import { DataType } from 'kml-pipe-ts/dist/base_structs';
 
@@ -33,12 +34,19 @@
     let diffusionCam: PerspectiveCamera;
     let mainCam: PerspectiveCamera;
 
+    
+
+
     // center: [x, y, z]; torsoPoints: [{x, y, z}...]
     const { start } = useFrame(() => {
         if (torsoCenter && torsoCenter.center && torsoCenter.torsoPoints.length > 0) {
-            shirt.position.x = torsoCenter.center[0] * 3.2
-            shirt.position.y = torsoCenter.center[1]
-            shirt.position.z = -torsoCenter.center[2] / 300
+            //shirt.position.set(...screenToWorld(torsoCenter.center[0], torsoCenter.center[1], torsoCenter.center[2]*2,mainCam))
+            console.log(torsoCenter.center)
+            shirt.position.x = torsoCenter.center[0] * 3 + 0.05
+            shirt.position.y = torsoCenter.center[1] * 2 - 0.1
+            shirt.position.z = -1.1//torsoCenter.center[2] / 160
+            
+            console.log(shirt.position)
             
             // nodes["DEF-shoulderR"].position.x = torsoCenter.torsoPoints[0].x
             // nodes["DEF-shoulderR"].position.y = torsoCenter.torsoPoints[0].y
@@ -84,11 +92,11 @@
 </script>
 
 <T.PerspectiveCamera
-    fov={60}
+    fov={30}
     aspect={1}
     near={0.1}
     far={100}
-    position={[0, 0.35, 2.15]}
+    position={[0, 0, 2]}
     makeDefault
     bind:ref={mainCam}
     on:create={({ ref }) => {

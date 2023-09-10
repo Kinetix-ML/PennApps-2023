@@ -8,6 +8,7 @@
 	import Modal from "../components/Modal.svelte";
     import "@fontsource/dm-sans";
 	import PreviewScene from "./cards/PreviewScene.svelte";
+	import startingCards from "../cards.json";
 
     const cardWidth = 320
     let padding = 425; // will be set later based on screen size
@@ -66,6 +67,9 @@
                 lenis.scrollTo(lenis.scroll + cardWidth);
             }
         }
+
+		window._shiftLeft = shiftLeft
+		window._shiftRight = shiftRight
         
     })
 
@@ -150,9 +154,10 @@
 		const image = imagePreview.querySelector("canvas")?.toDataURL();
 		cards = [...cards, [image!, imageData]];
 		modalOpen = false;
+		window._cards = cards;
 	}
 
-    let cards: string[][] = [];
+    let cards: string[][] = startingCards;
 
     let shiftLeft: Function;
     let shiftRight: Function;
@@ -163,7 +168,7 @@
 </script>
 
 <div class="fixed inset-0">
-	<MotionFeed bind:outCenter={outputs}/>
+	<MotionFeed bind:outCenter={outputs} on:swipeLeft={shiftLeft} on:swipeRight={shiftRight}/>
 	<div class="w-full h-full z-20 absolute top-0 left-0">
 		<Canvas>
 			<Scene torsoCenter={outputs}/>

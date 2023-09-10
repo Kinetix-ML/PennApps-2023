@@ -1,7 +1,6 @@
 <script lang="ts">
     export let width = "w-80";
     export let height = "h-80";
-    export let opacity = "opacity-50";
     export let index: number;
     export let currentIndex: number;
 
@@ -11,17 +10,16 @@
     function updateSize(currentIndex: number) {
         if (currentIndex == index) {
             heightClass = "h-[600px]";
-            // opacityClass = "opacity-80";
             opacityClass = "opacity-0";
-            colorClass = "bg-white-50";
+            colorClass = "bg-white-50/0"
         } else if (Math.abs(currentIndex - index) == 1) {
             heightClass = "h-96";
-            opacityClass = "opacity-60";
-            colorClass = "bg-white-100";
+            opacityClass = "opacity-100"
+            colorClass = "bg-white-100/60";
         } else {
             heightClass = height;
-            opacityClass = opacity;
-            colorClass = "bg-white-200";
+            opacityClass = "opacity-100";
+            colorClass = "bg-white-200/90";
         }
     }
     updateSize(currentIndex);

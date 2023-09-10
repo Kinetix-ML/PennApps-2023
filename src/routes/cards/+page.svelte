@@ -167,13 +167,16 @@
         </div>
     
         <!-- stuff for image preview -->
-        <div data-active="false" class="relative w-80 h-80 ml-10 overflow-hidden rounded-lg
+        <div data-active="false" class="relative w-80 h-80 ml-10 overflow-hidden rounded-lg group
         data-[active=false]:w-0 data-[active=false]:ml-0 transition-all duration-500" bind:this={imagePreview}>
             <div class="absolute inset-0 holographic-bg blur-lg"></div>
             <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-center text-lg">
                 <p class="mb-5 opacity-60">Your&nbsp;clothing&nbsp;is<br>loading...</p>
                 <div class="lds-ring drop-shadow-glass"><div></div><div></div><div></div><div></div></div>
             </div>
+            <div data-finished="false" class="absolute bottom-0 left-0 h-3 w-0 bg-white-0
+            group-data-[active=true]:w-11/12 transition-all duration-[12s]
+            data-[finished=true]:!w-full data-[finished=true]:duration-500"></div>
         </div>
     </div>
 </Modal>

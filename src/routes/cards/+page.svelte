@@ -105,6 +105,9 @@
 
     async function generateItem() {
         if (goButton.dataset.active != "true") { return }
+        // make sure loading is shown
+        imagePreview.dataset.done = "false";
+        imagePreview.dataset.active = "false";
 
         generated = false;
 

@@ -20,13 +20,15 @@
     import { Vector2, TextureLoader, Vector3 } from 'three';
     import ProjectedMaterial from 'three-projected-material'
 	import { DataType } from 'kml-pipe-ts/dist/base_structs';
+    import { currentTexture } from '../stores';
 
     let gltf: AsyncWritable<ThrelteGltf<Clothes.Shirt>>;
     let nodes: Clothes.Shirt['nodes'];
     let shirt: Group;
     let shirtMesh: SkinnedMesh;
 
-    export let torsoCenter
+    export let torsoCenter: any;
+    export let shirtTexture: string;
 
     const { renderer, scene } = useThrelte();
 
@@ -34,8 +36,24 @@
     let diffusionCam: PerspectiveCamera;
     let mainCam: PerspectiveCamera;
 
-    
+    $: $currentTexture, updateTexture();
 
+    function updateTexture() {
+        if (!shirtMesh) return;
+        const texture = new TextureLoader().load($currentTexture);
+        const material = new ProjectedMaterial({
+            camera: diffusionCam, 
+            texture, 
+            cover: true, 
+            textureScale: 0.6,
+            color: '#ccc', 
+            roughness: 0.95
+        });
+        shirtMesh.material = material;
+        material.project(shirtMesh);
+        diffusionCam.updateProjectionMatrix();
+        diffusionCam.updateWorldMatrix(true, true);
+    }
 
     // center: [x, y, z]; torsoPoints: [{x, y, z}...]
     const { start } = useFrame(() => {
@@ -45,7 +63,6 @@
             shirt.position.x = torsoCenter.center[0] * 3 + 0.05
             shirt.position.y = torsoCenter.center[1] * 2 - 0.1
             shirt.position.z = -1.1//torsoCenter.center[2] / 160
-            
             console.log(shirt.position)
             
             // nodes["DEF-shoulderR"].position.x = torsoCenter.torsoPoints[0].x
@@ -69,9 +86,9 @@
             await fetch('https://ce27-34-105-76-22.ngrok.io/', options)
                 .then(response => response.json())
                 .then(response => {imageData = response.image})
-                .catch(err => console.error(err));
-
-            const texture = new TextureLoader().load(`data:image/png;base64,${imageData}`);
+                .catch(err => console.error(err));*/
+            
+            const texture = new TextureLoader().load($currentTexture);
             const material = new ProjectedMaterial({
                 camera: diffusionCam, 
                 texture, 
@@ -83,8 +100,8 @@
             shirtMesh.material = material;
             material.project(shirtMesh);
             diffusionCam.updateProjectionMatrix();
-            diffusionCam.updateWorldMatrix(true, true);*/
-            
+            diffusionCam.updateWorldMatrix(true, true);
+        
             start();
         })
     };

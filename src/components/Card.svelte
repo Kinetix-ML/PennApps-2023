@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { currentTexture } from "../stores";
+
     export let width = "w-80";
     export let height = "h-80";
     export let index: number;

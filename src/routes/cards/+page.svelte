@@ -105,7 +105,7 @@
     let shiftLeft: Function;
     let shiftRight: Function;
 
-    let modalOpen = true;
+    let modalOpen = false;
 
 </script>
 

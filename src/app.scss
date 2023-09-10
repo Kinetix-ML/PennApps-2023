@@ -21,20 +21,46 @@
 
     .holographic-shadow {
         position: relative;
+        z-index: 1;
     }
-    .holographic-shadow::after {
+    .holographic-shadow::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        z-index: -10;
+        background-image: url("/holographic-dark.png");
+        background-size: 500% 500%;
+        animation: holographic-move 20s linear infinite;
+        // opacity: 0.5;
+        --blur: 150px;
+        filter: blur(var(--blur));
+        -moz-filter: blur(var(--blur));
+        -webkit-filter: blur(var(--blur));
+        -o-filter: blur(var(--blur));
+        transform: scale(1.1);
+    }
+
+    .holographic-bg {
+        background-image: url("/holographic.png");
+        background-size: 500% 500%;
+        animation: holographic-move 20s linear infinite;
+    }
+
+    .holographic-bg-pseudo {
+        position: relative;
+    }
+    .holographic-bg-pseudo::after {
         content: "";
         position: absolute;
         inset: 0;
         z-index: -1;
         background-image: url("/holographic.png");
         background-size: 500% 500%;
-        animation: holographic-move 20s linear infinite, blue-glow 10s linear infinite;
-        // opacity: 0.5;
-        filter: blur(100px);
-        -moz-filter: blur(100px);
-        -webkit-filter: blur(100px);
-        -o-filter: blur(100px);
+        animation: holographic-move 20s linear infinite;
+    }
+
+    .blue-glow {
+        filter: drop-shadow(0 0 20px rgb(151, 216, 255));
     }
 }
 

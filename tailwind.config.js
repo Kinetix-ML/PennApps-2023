@@ -19,7 +19,8 @@ export default {
         }
       },
       fontFamily: {
-        logo: ["Elgoc Regular", "serif"]
+        logo: ["Elgoc Regular", "serif"],
+        sans: ["DM Sans", "sans-serif"]
       }
     },
   },

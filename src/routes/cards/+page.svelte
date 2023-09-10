@@ -3,6 +3,7 @@
 	import { onMount } from "svelte";
 	import Card from "../../components/Card.svelte";
 	import Modal from "../../components/Modal.svelte";
+    import "@fontsource/dm-sans";
 
     const cardWidth = 320
     let padding = 425; // will be set later based on screen size
@@ -64,12 +65,42 @@
         
     })
 
+    // ui funcs
+    let shirtButton: HTMLButtonElement;
+    let hatButton: HTMLButtonElement;
+    let goButton: HTMLButtonElement;
+    function selectModalOption(option: "shirt" | "hat") {
+        console.log(shirtButton, shirtButton.dataset.selected)
+        console.log(hatButton, hatButton.dataset.selected)
+        if (option == "shirt") {
+            if (shirtButton.dataset.selected == "true") {
+                shirtButton.dataset.selected = "false";
+            } else {
+                shirtButton.dataset.selected = "true";
+                hatButton.dataset.selected = "false";
+            }
+        } else if (option == "hat") {
+            if (hatButton.dataset.selected == "true") {
+                hatButton.dataset.selected = "false";
+            } else {
+                hatButton.dataset.selected = "true";
+                shirtButton.dataset.selected = "false";
+            }
+        }
+
+        if (shirtButton.dataset.selected == "true" || hatButton.dataset.selected == "true") {
+            goButton.dataset.active = "true";
+        } else {
+            goButton.dataset.active = "false";
+        }
+    }
+
     const cards = Array(20).fill(null);
 
     let shiftLeft: Function;
     let shiftRight: Function;
 
-    let modalOpen = false;
+    let modalOpen = true;
 
 </script>
 
@@ -92,7 +123,22 @@
 </button>
 
 <Modal bind:open={modalOpen}>
-    This is some text
+    <p class="text-center font-bold text-lg font-sans">Create some clothing</p>
+    <p class="text-center text-sm font-sans mb-3">The limit is your imagination</p>
+    <input type="text" placeholder="Whatever you want..."
+    class="font-sans px-4 py-2 rounded-full bg-white-50/70 backdrop-blur-3xl
+    border-2 border-white-200/50 outline-none focus:border-[#a28cbb] transition-colors
+    duration-[50ms] w-full mb-2">
+    <div class="flex flex-row gap-2 w-full mb-2">
+        <button bind:this={shirtButton} data-selected="false" class="rounded-full bg-white-50/70 backdrop-blur-3xl 
+        px-4 py-2 border-2 border-white-200/50 flex-1 data-[selected=true]:bg-[#dbb4d6]/50
+        data-[selected=true]:border-[#d6bcd5]/50" on:click={()=>selectModalOption("shirt")}>Shirt</button>
+        <button bind:this={hatButton} data-selected="false" class="rounded-full bg-white-50/70 backdrop-blur-3xl
+        px-4 py-2 border-2 border-white-200/50 flex-1 data-[selected=true]:bg-[#dbb4d6]/50
+        data-[selected=true]:border-[#d6bcd5]/50" on:click={()=>selectModalOption("hat")}>Hat</button>
+    </div>
+    <button bind:this={goButton} data-active="false" class="w-full holographic-bg rounded-full px-4 py-2 font-bold 
+    font-sans data-[active=true]:hover:blue-glow transition-all duration-500 data-[active=false]:cursor-not-allowed">Go →</button>
 </Modal>
 
 <style>

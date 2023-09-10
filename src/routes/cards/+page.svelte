@@ -99,6 +99,7 @@
 
     let prompt: string;
     let imagePreview: HTMLDivElement;
+    let finishButtons: HTMLDivElement;
     let imageData: string;
     let generated = false;
 
@@ -124,6 +125,7 @@
                 imageData = response.image; 
                 imagePreview.dataset.done = 'true';
                 generated = true;
+                finishButtons.dataset.active = "true";
             })
             .catch(err => console.error(err));
     }
@@ -210,7 +212,17 @@
             {/if}
         </div>
     </div>
+    <div data-active="false" class="flex flex-row gap-4  drop-shadow-glass transition-all overflow-hidden
+        data-[active=true]:max-h-10 max-h-0 data-[active=true]:mt-8 duration-500" bind:this={finishButtons}>
+        <button class="w-full holographic-bg-blur rounded-full px-4 py-2 font-bold font-sans
+        hover:blue-glow transition-all duration-500 flex-1"
+            on:click={()=>{}}>Add to wardrobe</button>
+            <button class="w-full holographic-bg-blur rounded-full px-4 py-2 font-bold font-sans
+        hover:blue-glow transition-all duration-500 flex-1"
+            on:click={()=>{}}>Try again</button>
+    </div>
 </Modal>
+
 
 <style>
     :global(body) {

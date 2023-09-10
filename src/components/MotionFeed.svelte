@@ -7,6 +7,7 @@
     let pipe : KMLPipeline
     export let outCenter: Object | undefined = {}
     let processing = false
+    let moveTimer = 0
     
     const dispatch = createEventDispatcher();
 
@@ -49,9 +50,12 @@
 
             if (!(outputs[0].value instanceof String)) {
                 let deltaMove = handTestPoints.map(e => outputs[1].value[e]*(outputs[0].value.keypoints[e].z+1)).reduce((a, b) => a + b, 0) / handTestPoints.length
-                if (Math.abs(deltaMove) > 160) {
-                    console.log(`swipe ${deltaMove > 0 ? "right" : "left"}`)
-                    if (deltaMove > 0) {dispatch("swipeRight")} else {dispatch("swipeLeft")};
+                if (Math.abs(deltaMove) > 70) {
+
+                    if (deltaMove < 0 && moveTimer > 2) {dispatch("swipeRight")} else {dispatch("swipeLeft")};
+                    moveTimer++
+                } else {
+                    moveTimer = 0
                 }
             }
 

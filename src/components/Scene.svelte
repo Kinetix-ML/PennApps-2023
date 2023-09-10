@@ -36,31 +36,54 @@
     let diffusionCam: PerspectiveCamera;
     let mainCam: PerspectiveCamera;
 
-    $: $currentTexture, updateTexture();
 
-    function updateTexture() {
+    $: console.log($currentTexture)
+    $: updateTexture($currentTexture);
+
+    function updateTexture(tex: string) {
         if (!shirtMesh) return;
-        const texture = new TextureLoader().load($currentTexture);
-        const material = new ProjectedMaterial({
-            camera: diffusionCam, 
-            texture, 
-            cover: true, 
-            textureScale: 0.6,
-            color: '#ccc', 
-            roughness: 0.95
-        });
-        shirtMesh.material = material;
-        material.project(shirtMesh);
-        diffusionCam.updateProjectionMatrix();
-        diffusionCam.updateWorldMatrix(true, true);
+        gltf.then(async (e) => {
+            nodes = e.nodes;
+            shirtMesh = <SkinnedMesh>shirt.children[shirt.children.length - 1];
+
+            /*const options = {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: `{"prompt": "${prompt}", "depth": "${depthImage}.png"}`
+            }
+
+            await fetch('https://ce27-34-105-76-22.ngrok.io/', options)
+                .then(response => response.json())
+                .then(response => {imageData = response.image})
+                .catch(err => console.error(err));*/
+            shirt.position.x = 0
+            shirt.position.y = 0
+            shirt.position.z = 0
+            const texture = new TextureLoader().load(tex);
+            const material = new ProjectedMaterial({
+                camera: diffusionCam, 
+                texture, 
+                cover: true, 
+                textureScale: 0.8,
+                color: '#ccc', 
+                roughness: 0.95
+            });
+            shirtMesh.material = material;
+            material.project(shirtMesh);
+            console.log(material)
+            diffusionCam.updateProjectionMatrix();
+            diffusionCam.updateWorldMatrix(true, true);
+        
+            start();
+        })
     }
 
     // center: [x, y, z]; torsoPoints: [{x, y, z}...]
     const { start } = useFrame(() => {
         if (torsoCenter && torsoCenter.center && torsoCenter.torsoPoints.length > 0) {
             //shirt.position.set(...screenToWorld(torsoCenter.center[0], torsoCenter.center[1], torsoCenter.center[2]*2,mainCam))
-            shirt.position.x = torsoCenter.center[0] * 3 + 0.05
-            shirt.position.y = torsoCenter.center[1] * 2 - 0.1
+            shirt.position.x = torsoCenter.center[0] * 3-0.05
+            shirt.position.y = torsoCenter.center[1] * 2 
             shirt.position.z = -1.1//torsoCenter.center[2] / 160
             console.log(torsoCenter.torsoPoints[0].x)
             // nodes["DEF-upper_armL"].position.x = -torsoCenter.torsoPoints[0].x
@@ -100,12 +123,13 @@
                 camera: diffusionCam, 
                 texture, 
                 cover: true, 
-                textureScale: 0.6,
+                textureScale: 0.8,
                 color: '#ccc', 
                 roughness: 0.95
             });
             shirtMesh.material = material;
             material.project(shirtMesh);
+            
             diffusionCam.updateProjectionMatrix();
             diffusionCam.updateWorldMatrix(true, true);
         

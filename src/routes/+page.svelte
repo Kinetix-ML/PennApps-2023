@@ -131,7 +131,7 @@
         imagePreview.dataset.active = "true";
         progressBar.dataset.loading = "true";
 
-        await fetch('https://f2bf-34-105-76-22.ngrok.io/', options)
+        await fetch('https://4da0-34-105-76-22.ngrok.io', options)
             .then(response => response.json())
             .then(response => {
                 imageData = response.image; 

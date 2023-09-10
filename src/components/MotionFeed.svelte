@@ -1,13 +1,15 @@
 <script lang="ts">
     import type { KMLPipeline } from 'kml-pipe-ts';
-    import { onMount } from 'svelte';
+    import { createEventDispatcher, onMount } from 'svelte';
 
     let video : HTMLVideoElement
     let canvas : HTMLCanvasElement
     let pipe : KMLPipeline
-    export let outCenter = {}
+    export let outCenter: Object | undefined = {}
     let processing = false
     
+    const dispatch = createEventDispatcher();
+
     onMount(async () => {
         await loadDemoPipe()
         await startWebcam();
@@ -49,6 +51,7 @@
                 let deltaMove = handTestPoints.map(e => outputs[1].value[e]*(outputs[0].value.keypoints[e].z+1)).reduce((a, b) => a + b, 0) / handTestPoints.length
                 if (Math.abs(deltaMove) > 160) {
                     console.log(`swipe ${deltaMove > 0 ? "right" : "left"}`)
+                    if (deltaMove > 0) {dispatch("swipeRight")} else {dispatch("swipeLeft")};
                 }
             }
 

@@ -8,6 +8,7 @@
 	import Modal from "../components/Modal.svelte";
     import "@fontsource/dm-sans";
 	import PreviewScene from "./cards/PreviewScene.svelte";
+	import startingCards from "../cards.json";
 
     const cardWidth = 320
     let padding = 425; // will be set later based on screen size
@@ -66,6 +67,9 @@
                 lenis.scrollTo(lenis.scroll + cardWidth);
             }
         }
+
+		window._shiftLeft = shiftLeft
+		window._shiftRight = shiftRight
         
     })
 
@@ -126,7 +130,7 @@
         imagePreview.dataset.active = "true";
         progressBar.dataset.loading = "true";
 
-        await fetch('https://48e9-34-105-76-22.ngrok.io/', options)
+        await fetch('https://f2bf-34-105-76-22.ngrok.io/', options)
             .then(response => response.json())
             .then(response => {
                 imageData = response.image; 
@@ -146,7 +150,14 @@
         finishButtons.dataset.active = "false";
     }
 
-    const cards = Array(20).fill(null);
+	function addToWardrobe() {
+		const image = imagePreview.querySelector("canvas")?.toDataURL();
+		cards = [...cards, [image!, imageData]];
+		modalOpen = false;
+		window._cards = cards;
+	}
+
+    let cards: string[][] = startingCards;
 
     let shiftLeft: Function;
     let shiftRight: Function;
@@ -157,7 +168,7 @@
 </script>
 
 <div class="fixed inset-0">
-	<MotionFeed bind:outCenter={outputs}/>
+	<MotionFeed bind:outCenter={outputs} on:swipeLeft={shiftLeft} on:swipeRight={shiftRight}/>
 	<div class="w-full h-full z-20 absolute top-0 left-0">
 		<Canvas>
 			<Scene torsoCenter={outputs}/>
@@ -168,7 +179,9 @@
 <div class="absolute top-1/2 -translate-y-1/2">
     <div class="flex flex-row no-scrollbar gap-4 items-center" style={padding ? `padding: ${padding}px` : ""} bind:this={wrapper}>
         {#each cards as card, index}
-            <Card {index} {currentIndex}>{index}</Card>
+            <Card {index} {currentIndex}>
+				<img src={card[0]} alt="">
+			</Card>
         {/each}
     </div>
 </div>
@@ -234,10 +247,10 @@
         data-[active=true]:max-h-10 max-h-0 data-[active=true]:mt-8 duration-500" bind:this={finishButtons}>
         <button class="w-full holographic-bg-blur rounded-full px-4 py-2 font-bold font-sans
         hover:blue-glow transition-all duration-500 flex-1"
-            on:click={()=>{}}>Add to wardrobe</button>
+            on:click={addToWardrobe}>Add to wardrobe</button>
             <button class="w-full holographic-bg-blur rounded-full px-4 py-2 font-bold font-sans
         hover:blue-glow transition-all duration-500 flex-1"
-            on:click={()=>{}}>Try again</button>
+            on:click={clearModal}>Try again</button>
     </div>
 </Modal>
 

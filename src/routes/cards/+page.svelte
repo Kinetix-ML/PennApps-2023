@@ -86,11 +86,12 @@
 <p class="fixed top-5 left-6 font-logo text-4xl translate-y-1 text-[#a28cbb] blur-[8px]">Dreamwear</p>
 <p class="fixed top-5 left-6 font-logo text-4xl">Dreamwear</p>
 <button class="fixed top-5 right-6 text-4xl w-10 h-10 backdrop-blur-xl holographic-text
-            cursor-pointer font-bold bg-white-50 shadow-glass-small rounded-md">
+            cursor-pointer font-bold bg-white-50 shadow-glass-small rounded-md"
+    on:click={()=>modalOpen = true}>
     +
 </button>
 
-<Modal open={modalOpen}>
+<Modal bind:open={modalOpen}>
     This is some text
 </Modal>
 

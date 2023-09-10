@@ -75,29 +75,29 @@
     })
 
     // ui funcs
-    let shirtButton: HTMLButtonElement;
-    let hatButton: HTMLButtonElement;
+    // let shirtButton: HTMLButtonElement;
+    // let hatButton: HTMLButtonElement;
     let goButton: HTMLButtonElement;
     function selectModalOption(option: "shirt" | "hat" | "prompt") {
-        if (option == "shirt") {
-            if (shirtButton.dataset.selected == "true") {
-                shirtButton.dataset.selected = "false";
-            } else {
-                shirtButton.dataset.selected = "true";
-                hatButton.dataset.selected = "false";
-            }
-        } else if (option == "hat") {
-            if (hatButton.dataset.selected == "true") {
-                hatButton.dataset.selected = "false";
-            } else {
-                hatButton.dataset.selected = "true";
-                shirtButton.dataset.selected = "false";
-            }
-        }
+        // if (option == "shirt") {
+        //     if (shirtButton.dataset.selected == "true") {
+        //         shirtButton.dataset.selected = "false";
+        //     } else {
+        //         shirtButton.dataset.selected = "true";
+        //         hatButton.dataset.selected = "false";
+        //     }
+        // } else if (option == "hat") {
+        //     if (hatButton.dataset.selected == "true") {
+        //         hatButton.dataset.selected = "false";
+        //     } else {
+        //         hatButton.dataset.selected = "true";
+        //         shirtButton.dataset.selected = "false";
+        //     }
+        // }
 
-        if (prompt.length && 
-            shirtButton.dataset.selected == "true" ||
-            hatButton.dataset.selected == "true") {
+        if (prompt.length) {
+            // shirtButton.dataset.selected == "true" ||
+            // hatButton.dataset.selected == "true") {
             goButton.dataset.active = "true";
         } else {
             goButton.dataset.active = "false";
@@ -119,8 +119,8 @@
 
         generated = false;
 
-        const type = shirtButton.dataset.active != "true" ? "shirt" : "hat";
-        console.log(type);
+        // const type = shirtButton.dataset.active != "true" ? "shirt" : "hat";
+		const type = "shirt";
         const options = {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
@@ -145,8 +145,6 @@
 
     function clearModal() {
         prompt = "";
-        shirtButton.dataset.selected = "false";
-        hatButton.dataset.selected = "false";
         imagePreview.dataset.active = "false";
         finishButtons.dataset.active = "false";
     }
@@ -209,7 +207,7 @@
             class="font-sans px-4 py-2 rounded-full bg-white-50/70 backdrop-blur-3xl
             border-2 border-white-200/50 outline-none focus:border-[#a28cbb] transition-colors
             duration-[50ms] w-full mb-2" bind:value={prompt} on:input={()=>selectModalOption("prompt")}>
-            <div class="flex flex-row gap-2 w-full mb-2">
+            <!-- <div class="flex flex-row gap-2 w-full mb-2">
                 <button bind:this={shirtButton} data-selected="false" class="rounded-full bg-white-100/70 backdrop-blur-3xl 
                 px-4 py-2 border-2 border-white-200/50 flex-1 data-[selected=true]:bg-white-0/50 transition-all
                 data-[selected=true]:border-white-150/50 data-[selected=true]:blue-glow-thin duration-75" 
@@ -218,7 +216,7 @@
                 px-4 py-2 border-2 border-white-200/50 flex-1 data-[selected=true]:bg-white-0/50 transition-all
                 data-[selected=true]:border-white-150/50 data-[selected=true]:blue-glow-thin duration-75"
                 on:click={()=>selectModalOption("hat")}>Hat</button>
-            </div>
+            </div> -->
             <button bind:this={goButton} data-active="false" class="w-full holographic-bg-blur rounded-full px-4 py-2 
             font-bold  font-sans data-[active=true]:hover:blue-glow transition-all duration-500
             data-[active=false]:cursor-not-allowed shadow-glass-xs"

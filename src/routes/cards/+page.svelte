@@ -117,7 +117,7 @@
         const options = {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
-            body: `{"prompt": "${prompt}", "depth": "${type}.png"}`
+            body: JSON.stringify({prompt: prompt, depth: type + ".png"})
         }
 
         // show image preview (current loading)

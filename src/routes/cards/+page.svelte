@@ -97,13 +97,27 @@
 
     let prompt: string;
     let imagePreview: HTMLDivElement
-    function generateItem() {
+    async function generateItem() {
         if (goButton.dataset.active != "true") { return }
 
         const type = shirtButton.dataset.active == "true" ? "shirt" : "hat";
+        const options = {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: `{"prompt": "${prompt}", "depth": "${type}.png"}`
+        }
+        let imageData: string;
 
         // show image preview (current loading)
         imagePreview.dataset.active = "true";
+
+        await fetch('https://ce27-34-105-76-22.ngrok.io/', options)
+            .then(response => response.json())
+            .then(response => {
+                imageData = response.image; 
+                imagePreview.dataset.active = 'false'
+            })
+            .catch(err => console.error(err));
     }
 
     function clearModal() {

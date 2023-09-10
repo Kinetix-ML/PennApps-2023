@@ -11,15 +11,15 @@
         if (currentIndex == index) {
             heightClass = "h-[600px]";
             opacityClass = "opacity-0";
-            colorClass = "bg-white-50/0"
+            colorClass = "bg-white-50"
         } else if (Math.abs(currentIndex - index) == 1) {
             heightClass = "h-96";
             opacityClass = "opacity-100"
-            colorClass = "bg-white-100/60";
+            colorClass = "bg-white-100/80";
         } else {
             heightClass = height;
             opacityClass = "opacity-100";
-            colorClass = "bg-white-200/90";
+            colorClass = "bg-white-200/50";
         }
     }
     updateSize(currentIndex);

@@ -4,6 +4,8 @@
 	import Card from "../../components/Card.svelte";
 	import Modal from "../../components/Modal.svelte";
     import "@fontsource/dm-sans";
+	import { Canvas } from "@threlte/core";
+	import PreviewScene from "./PreviewScene.svelte";
 
     const cardWidth = 320
     let padding = 425; // will be set later based on screen size
@@ -96,26 +98,32 @@
     }
 
     let prompt: string;
-    let imagePreview: HTMLDivElement
+    let imagePreview: HTMLDivElement;
+    let imageData: string;
+    let generated = false;
+
     async function generateItem() {
         if (goButton.dataset.active != "true") { return }
 
-        const type = shirtButton.dataset.active == "true" ? "shirt" : "hat";
+        generated = false;
+
+        const type = shirtButton.dataset.active != "true" ? "shirt" : "hat";
+        console.log(type);
         const options = {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
             body: `{"prompt": "${prompt}", "depth": "${type}.png"}`
         }
-        let imageData: string;
 
         // show image preview (current loading)
         imagePreview.dataset.active = "true";
 
-        await fetch('https://ce27-34-105-76-22.ngrok.io/', options)
+        await fetch('https://ab1e-34-105-76-22.ngrok.io/', options)
             .then(response => response.json())
             .then(response => {
                 imageData = response.image; 
-                imagePreview.dataset.active = 'false'
+                imagePreview.dataset.done = 'true';
+                generated = true;
             })
             .catch(err => console.error(err));
     }
@@ -180,16 +188,25 @@
         </div>
     
         <!-- stuff for image preview -->
-        <div data-active="false" class="relative w-80 h-80 ml-10 overflow-hidden rounded-lg group
+        <div data-active="false" data-done="false" class="relative w-80 h-80 ml-10 overflow-hidden rounded-lg group
         data-[active=false]:w-0 data-[active=false]:ml-0 transition-all duration-500" bind:this={imagePreview}>
-            <div class="absolute inset-0 holographic-bg blur-lg"></div>
-            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-center text-lg">
-                <p class="mb-5 opacity-60">Your&nbsp;clothing&nbsp;is<br>loading...</p>
-                <div class="lds-ring drop-shadow-glass"><div></div><div></div><div></div><div></div></div>
+            <div class="group-data-[done=true]:opacity-0 transition duration-150">
+                <div class="absolute inset-0 holographic-bg blur-lg"></div>
+                <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-center text-lg">
+                    <p class="mb-5 opacity-60">Your&nbsp;clothing&nbsp;is<br>loading...</p>
+                    <div class="lds-ring drop-shadow-glass"><div></div><div></div><div></div><div></div></div>
+                </div>
+                <div data-finished="false" class="absolute bottom-0 left-0 h-3 w-0 bg-white-0
+                group-data-[active=true]:w-11/12 transition-all duration-[12s]
+                data-[finished=true]:!w-full data-[finished=true]:duration-500"></div>
             </div>
-            <div data-finished="false" class="absolute bottom-0 left-0 h-3 w-0 bg-white-0
-            group-data-[active=true]:w-11/12 transition-all duration-[12s]
-            data-[finished=true]:!w-full data-[finished=true]:duration-500"></div>
+            {#if generated}
+            <div class="w-full h-full opacity-0 group-data-[done=true]:opacity-100 transition">
+                <Canvas>
+                    <PreviewScene imageData={imageData}/>
+                </Canvas>
+            </div>
+            {/if}
         </div>
     </div>
 </Modal>

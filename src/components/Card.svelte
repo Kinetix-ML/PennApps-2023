@@ -11,7 +11,8 @@
     function updateSize(currentIndex: number) {
         if (currentIndex == index) {
             heightClass = "h-[600px]";
-            opacityClass = "opacity-80";
+            // opacityClass = "opacity-80";
+            opacityClass = "opacity-0";
             colorClass = "bg-white-50";
         } else if (Math.abs(currentIndex - index) == 1) {
             heightClass = "h-96";

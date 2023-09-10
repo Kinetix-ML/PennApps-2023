@@ -112,6 +112,7 @@
         prompt = "";
         shirtButton.dataset.selected = "false";
         hatButton.dataset.selected = "false";
+        imagePreview.dataset.active = "false";
     }
 
     const cards = Array(20).fill(null);

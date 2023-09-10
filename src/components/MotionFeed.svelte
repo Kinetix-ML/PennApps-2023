@@ -15,6 +15,29 @@
         await startWebcam();
     })
 
+    function screenToWorldFOV(keypoints2d: {x: number, y: number}[], depths: number[], fovDegrees: number, screenWidth: number, screenHeight: number) {
+        // Calculate the focal length from the field of view and screen width
+        let f = screenWidth / (2 * Math.tan(fovDegrees * Math.PI / 360));  // Convert FOV to radians
+
+        let cx = screenWidth / 2;  // Image center x-coordinate
+        let cy = screenHeight / 2;  // Image center y-coordinate
+
+        let keypoints3dWorld = [];
+
+        for(let i = 0; i < keypoints2d.length; i++) {
+            let x = keypoints2d[i].x;
+            let y = keypoints2d[i].y;
+            let Z = 3 + depths[i];  // Depth value provided by BlazePose
+
+            let X = (x - cx) * Z / f;
+            let Y = (y - cy) * Z / f;
+
+            keypoints3dWorld.push([X, Y, Z]);
+        }
+
+        return keypoints3dWorld;
+    }
+
     const runInference = async () => {
         if (!processing) {
             processing = true;
@@ -22,11 +45,11 @@
             let outputs = await pipe.execute([video, canvas]);
             
             const handTestPoints = [8, 7, 12, 11, 16, 15, 20, 19]
-            const torsoTestPoints = [12, 11, 24, 23]
+            const torsoTestPoints = [24, 23]//[12, 11, 24, 23]
 
             if (!(outputs[0].value instanceof String)) {
                 let deltaMove = handTestPoints.map(e => outputs[1].value[e]*(outputs[0].value.keypoints[e].z+1)).reduce((a, b) => a + b, 0) / handTestPoints.length
-                if (Math.abs(deltaMove) > 120) {
+                if (Math.abs(deltaMove) > 160) {
                     console.log(`swipe ${deltaMove > 0 ? "right" : "left"}`)
                     if (deltaMove > 0) {dispatch("swipeRight")} else {dispatch("swipeLeft")};
                 }
@@ -38,15 +61,16 @@
                         .map(e => outputs[3].value.keypoints[e])
                         .reduce((a, b) => ({x: a.x+b.x, y: a.y+b.y, z: a.z+b.z})))
                         .map(e => (e as number)/4)
-
-                        center[0] /= canvas.width
+                console.log("z: "+center[2])
+                //center = screenToWorldFOV([{x: center[0], y: center[1]}], [center[2]], 54, canvas.width, canvas.height)[0]
+                center[0] /= canvas.width
                 center[1] /= canvas.height
                 center[0] -= 0.5
                 center[1] -= 0.5
                 center[1] = -center[1]
 
                 let torsoPoints = torsoTestPoints
-                        .map(e => outputs[3].value.keypoints[e])
+                        .map(e => outputs[3].value.keypoints3D[e])
                         .map(({x, y, z}) => ({x: x / canvas.width - 0.5 - center[0], y: -y / canvas.height + 0.5 - center[1], z: z - center[2]}))
                         //.reduce((a, b) => ({x: a.x+b.x, y: a.y+b.y, z: a.z+b.z})))
                         //.map(e => (e as number)/4)

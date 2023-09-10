@@ -176,7 +176,7 @@
         <div class="flex-1 min-w-[15rem]">
 
             <p class="text-center font-bold text-lg font-sans">Create some clothing</p>
-            <p class="text-center text-sm font-sans mb-3">The limit is your imagination</p>
+            <p class="text-center text-sm font-sans mb-3">The only limit is your imagination</p>
             <input type="text" placeholder="Whatever you want..."
             class="font-sans px-4 py-2 rounded-full bg-white-50/70 backdrop-blur-3xl
             border-2 border-white-200/50 outline-none focus:border-[#a28cbb] transition-colors

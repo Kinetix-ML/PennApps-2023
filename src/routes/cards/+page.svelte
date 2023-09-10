@@ -2,6 +2,7 @@
     import Lenis from "@studio-freight/lenis";
 	import { onMount } from "svelte";
 	import Card from "../../components/Card.svelte";
+	import Modal from "../../components/Modal.svelte";
 
     const cardWidth = 320
     let padding = 425; // will be set later based on screen size
@@ -60,12 +61,15 @@
                 lenis.scrollTo(lenis.scroll + cardWidth);
             }
         }
+        
     })
 
     const cards = Array(20).fill(null);
 
     let shiftLeft: Function;
     let shiftRight: Function;
+
+    let modalOpen = false;
 
 </script>
 
@@ -86,6 +90,10 @@
             cursor-pointer font-bold bg-white-50 shadow-glass-small rounded-md">
     +
 </button>
+
+<Modal {modalOpen}>
+    This is some text
+</Modal>
 
 <style>
     :global(body) {

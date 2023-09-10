@@ -15,7 +15,7 @@ export default {
         white: {
           50: "#FBFBFB",
           100: "#EBEBEB",
-          200: "D9D9D9",
+          200: "#D9D9D9",
         }
       },
       fontFamily: {

@@ -2,6 +2,7 @@
     import { T, useFrame, useThrelte, type AsyncWritable } from '@threlte/core'
     import type * as Clothes from './clothes/types';
     import * as ClothMeshes from './Clothes.js'
+    import { WebGLRenderTarget } from 'three';
 	import { 
         type ThrelteGltf,
         OrbitControls, 
@@ -10,16 +11,24 @@
     } from '@threlte/extras';
     import type {
         CameraHelper,
-        PerspectiveCamera
+        Group,
+        Mesh,
+        PerspectiveCamera,
+		SkinnedMesh,
     } from 'three'
+    import { Vector2, TextureLoader } from 'three';
+    import ProjectedMaterial from 'three-projected-material'
 
-    let gltf : AsyncWritable<ThrelteGltf<Clothes.Shirt>>;
-    let nodes : Clothes.Shirt['nodes'];
+    let gltf: AsyncWritable<ThrelteGltf<Clothes.Shirt>>;
+    let nodes: Clothes.Shirt['nodes'];
+    let shirt: Group;
+    let shirtMesh: SkinnedMesh;
 
     const { renderer, scene } = useThrelte();
 
     let helperA: CameraHelper;
     let diffusionCam: PerspectiveCamera;
+    let mainCam: PerspectiveCamera;
 
     const { start } = useFrame(() => {
     }, {autostart: false})
@@ -27,9 +36,22 @@
     const onChange = () => {
         gltf.then(e => {
             nodes = e.nodes
+            shirtMesh = <SkinnedMesh>shirt.children[shirt.children.length - 1];
+            const texture = new TextureLoader().load('./depth/shirt.png')
+            const material = new ProjectedMaterial({
+                camera: diffusionCam, 
+                texture, 
+                cover: true, 
+                color: '#ccc', 
+                roughness: 0.95
+            })
+            shirtMesh.material = material;
+            material.project(shirtMesh);
+            
             start()
         })
     };
+
 </script>
 
 <T.PerspectiveCamera
@@ -39,10 +61,13 @@
     far={100}
     position={[1, 1, 1]}
     makeDefault
+    bind:ref={mainCam}
     on:create={({ ref }) => {
         ref.lookAt(0, 0, 0)
     }}
-><OrbitControls/></T.PerspectiveCamera>
+>
+    <OrbitControls/>
+</T.PerspectiveCamera>
 
 <!-- Camera for StableDiffusion -->
 <T.PerspectiveCamera
@@ -53,6 +78,9 @@
     far={50}
     position={[0, 0.35, 2.15]}
     bind:ref={diffusionCam}
+    on:create={({ ref }) => {
+        ref.lookAt(0, 0, 0)
+    }}
 >
     <TransformControls
         object={ref}
@@ -70,8 +98,7 @@
     </Portal>
 </T.PerspectiveCamera>
 
-
 <T.AmbientLight />
-<T.DirectionalLight color="white"/>
+<T.DirectionalLight color={[1, 1, 1]}/>
 
-<ClothMeshes.Shirt bind:gltf={gltf} on:create={onChange}/> 
+<ClothMeshes.Shirt bind:ref={shirt} bind:gltf={gltf} on:create={onChange}/> 
